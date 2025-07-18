@@ -1,0 +1,525 @@
+/* CSS Variables and Reset */
+:root {
+  --font-size: 14px;
+  --background: #ffffff;
+  --foreground: oklch(0.145 0 0);
+  --card: #ffffff;
+  --card-foreground: oklch(0.145 0 0);
+  --primary: #030213;
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.95 0.0058 264.53);
+  --secondary-foreground: #030213;
+  --muted: #ececf0;
+  --muted-foreground: #717182;
+  --border: rgba(0, 0, 0, 0.1);
+  --input-background: #f3f3f5;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --radius: 0.625rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: var(--font-size);
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f9fafb;
+  color: var(--foreground);
+  line-height: 1.5;
+}
+
+/* Custom Figma Hand-style typography classes */
+.figma-hand-bold {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.figma-hand-regular {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.figma-hand-italic {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segma UI', Roboto, sans-serif;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.01em;
+}
+
+/* Main Layout */
+.app-container {
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.max-width-container {
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+/* Navigation */
+.navigation {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.nav-button {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background-color: white;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 1rem;
+}
+
+.nav-button:hover {
+  background-color: var(--muted);
+}
+
+.nav-button-active {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border-color: var(--primary);
+}
+
+.nav-button-secondary {
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+  border-color: var(--secondary);
+}
+
+/* Page Content */
+.page-content {
+  transition: all 0.3s ease-in-out;
+}
+
+.page-hidden {
+  display: none;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Dashboard Left Half - Mint to Pale Pink Gradient */
+.dashboard-left {
+  background: linear-gradient(135deg, #A0F0E6 0%, #F4C4C4 100%);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  min-height: 600px;
+}
+
+/* Dashboard Right Half - Coral to Peach Gradient */
+.dashboard-right {
+  background: linear-gradient(135deg, #FF8A8A 0%, #FFC6C6 100%);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  min-height: 600px;
+}
+
+/* Header */
+.header-section {
+  margin-bottom: 1.5rem;
+}
+
+.date-header {
+  font-size: 1.5rem;
+  text-align: center;
+  color: #374151;
+}
+
+/* Section Titles */
+.section-title {
+  font-size: 1.125rem;
+  color: #374151;
+  margin-bottom: 0.75rem;
+}
+
+.section-title-large {
+  font-size: 1.25rem;
+  color: #374151;
+  margin-bottom: 1rem;
+}
+
+/* Water Tracker */
+.water-tracker-section {
+  margin-bottom: 1.5rem;
+}
+
+.water-glasses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.water-glass {
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.water-glass:hover {
+  transform: scale(1.1);
+}
+
+.water-glass.filled {
+  opacity: 1;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.water-glass.empty {
+  opacity: 0.5;
+}
+
+/* Inspiring Word */
+.inspiring-word-section {
+  margin-bottom: 1.5rem;
+}
+
+.inspiring-word-input {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.3);
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  text-align: center;
+  font-size: 2rem;
+  color: #374151;
+}
+
+.inspiring-word-input::placeholder {
+  color: rgba(55, 65, 81, 0.7);
+}
+
+/* Priorities */
+.priorities-section {
+  margin-bottom: 1.5rem;
+}
+
+.priorities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.priority-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.priority-number {
+  font-size: 1.125rem;
+  color: #374151;
+  width: 1.5rem;
+}
+
+.priority-input {
+  flex: 1;
+  background-color: rgba(255, 255, 255, 0.3);
+  border: none;
+  border-bottom: 2px solid rgba(156, 163, 175, 0.5);
+  border-radius: 0;
+  padding: 0.5rem 0;
+  font-size: 1.125rem;
+  color: #374151;
+}
+
+.priority-input::placeholder {
+  color: rgba(55, 65, 81, 0.7);
+}
+
+/* Tasks */
+.tasks-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.tasks-list {
+  flex: 1;
+  margin-bottom: 1rem;
+  max-height: 24rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+
+.task-checkbox {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid white;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.task-checkbox.checked {
+  background-color: #10b981;
+}
+
+.task-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #374151;
+  font-size: 1rem;
+}
+
+.task-input::placeholder {
+  color: rgba(55, 65, 81, 0.7);
+}
+
+.task-categories {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.category-button {
+  padding: 0.25rem 0.75rem;
+  border: 1px solid;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.875rem;
+}
+
+.category-button.work {
+  border-color: rgba(249, 115, 22, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #374151;
+}
+
+.category-button.work.active {
+  background-color: #f97316;
+  color: white;
+  border-color: #f97316;
+}
+
+.category-button.personal {
+  border-color: rgba(20, 184, 166, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #374151;
+}
+
+.category-button.personal.active {
+  background-color: #14b8a6;
+  color: white;
+  border-color: #14b8a6;
+}
+
+/* Copy Tasks Button */
+.copy-tasks-button {
+  width: 100%;
+  background-color: #FF8A8A;
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  font-size: 1rem;
+}
+
+.copy-tasks-button:hover {
+  background-color: #ff7070;
+}
+
+/* Planning & Reflection Page */
+.planning-container {
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.planning-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .planning-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Notes */
+.notes-textarea {
+  width: 100%;
+  min-height: 8rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  resize: vertical;
+  font-size: 0.875rem;
+}
+
+/* Meals */
+.meal-section {
+  margin-bottom: 1rem;
+}
+
+.meal-title {
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+}
+
+.meal-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.meal-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bullet {
+  color: #6b7280;
+}
+
+.meal-input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+}
+
+/* Mood Selector */
+.mood-section {
+  margin-bottom: 1.5rem;
+}
+
+.mood-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.mood-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background-color: white;
+  border: 2px solid #d1d5db;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  min-width: 80px;
+}
+
+.mood-button:hover {
+  transform: scale(1.05);
+  border-color: #3b82f6;
+}
+
+.mood-button.selected {
+  background-color: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.mood-emoji {
+  font-size: 1.5rem;
+}
+
+.mood-label {
+  font-size: 0.875rem;
+}
+
+/* Day's Wins */
+.wins-textarea {
+  width: 100%;
+  min-height: 6rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  resize: vertical;
+  font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 0.5rem;
+  }
+  
+  .dashboard-left,
+  .dashboard-right {
+    min-height: auto;
+    padding: 1rem;
+  }
+  
+  .inspiring-word-input {
+    font-size: 1.5rem;
+  }
+  
+  .date-header {
+    font-size: 1.25rem;
+  }
+}
+
+/* Smooth transitions */
+.transition-smooth,
+.water-glass,
+.mood-button,
+.category-button,
+.nav-button,
+.copy-tasks-button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Focus styles */
+input:focus,
+textarea:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}

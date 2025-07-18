@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Planner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables for Colors */
+        :root {
+            --mint: #a8e6cf;
+            --pale-pink: #fad0c4;
+            --coral: #ff9a9e;
+            --peach: #fecfef;
+            --text-dark: #2d3748;
+            --text-light: #4a5568;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        .figma-hand-bold {
+            font-weight: 700;
+            font-variation-settings: 'wght' 700;
+        }
+
+        .figma-hand-regular {
+            font-weight: 400;
+        }
+
+        .figma-hand-italic {
+            font-style: italic;
+        }
+
+        .app-container {
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .max-width-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .navigation {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            justify-content: center;
+        }
+
+        .nav-button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--text-dark);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-button-active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .nav-button-secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        /* Page Management */
+        .page-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 32px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-hidden {
+            display: none;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            height: 100%;
+        }
+
+        .dashboard-left {
+            background: linear-gradient(135deg, var(--mint) 0%, var(--pale-pink) 100%);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .dashboard-right {
+            background: linear-gradient(135deg, var(--coral) 0%, var(--peach) 100%);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        /* Header */
+        .date-header {
+            font-size: 24px;
+            text-align: center;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 18px;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+        }
+
+        .section-title-large {
+            font-size: 24px;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        /* Water Tracker */
+        .water-glasses {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .water-glass {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .water-glass:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Inspiring Word */
+        .inspiring-word-input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            font-size: 18px;
+            background: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .inspiring-word-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Priorities */
+        .priority-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .priority-number {
+            font-size: 20px;
+            color: var(--text-dark);
+            min-width: 24px;
+        }
+
+        .priority-input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .priority-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Tasks */
+        .tasks-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tasks-list {
+            flex: 1;
+            margin-bottom: 20px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 8px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #667eea;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .task-checkbox.checked {
+            background: #667eea;
+        }
+
+        .task-checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .task-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .task-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .task-categories {
+            display: flex;
+            gap: 4px;
+        }
+
+        .category-button {
+            padding: 4px 8px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-button.work {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .category-button.work.active {
+            background: #1976d2;
+            color: white;
+        }
+
+        .category-button.personal {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .category-button.personal.active {
+            background: #7b1fa2;
+            color: white;
+        }
+
+        .copy-tasks-button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .copy-tasks-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Planning Container */
+        .planning-container {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .notes-section {
+            width: 100%;
+        }
+
+        .notes-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 16px;
+            resize: vertical;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .notes-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .planning-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 32px;
+        }
+
+        /* Meals */
+        .meal-section {
+            margin-bottom: 24px;
+        }
+
+        .meal-title {
+            font-size: 18px;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .meal-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .bullet {
+            font-size: 16px;
+            color: var(--text-light);
+        }
+
+        .meal-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .meal-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Right Column */
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Mood Section */
+        .mood-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mood-button {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mood-button:hover {
+            border-color: #667eea;
+            transform: translateY(-1px);
+        }
+
+        .mood-button.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .mood-emoji {
+            font-size: 24px;
+        }
+
+        .mood-label {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        /* Wins Section */
+        .wins-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 16px;
+            resize: vertical;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .wins-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Export Section */
+        .export-section {
+            margin-top: 24px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 12px;
+            color: white;
+        }
+
+        .export-button {
+            width: 100%;
+            padding: 16px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 12px;
+        }
+
+        .export-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard-grid,
+            .planning-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-button {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="max-width-container">
+            <!-- Navigation -->
+            <div class="navigation">
+                <button id="page1-btn" class="nav-button nav-button-active figma-hand-bold">Page 1</button>
+                <button id="page2-btn" class="nav-button figma-hand-bold">Page 2</button>
+                <button id="duplicate-btn" class="nav-button nav-button-secondary figma-hand-bold">Duplicate for Tomorrow</button>
+            </div>
+
+            <!-- Page 1: Daily Dashboard -->
+            <div id="page1" class="page-content">
+                <div class="dashboard-grid">
+                    <!-- Left Half - Mint to Pale Pink Gradient -->
+                    <div class="dashboard-left">
+                        <!-- Header with Date -->
+                        <div class="header-section">
+                            <h1 id="current-date" class="figma-hand-bold date-header"></h1>
+                        </div>
+
+                        <!-- Water Tracker -->
+                        <div class="water-tracker-section">
+                            <h3 class="figma-hand-bold section-title">Water Intake</h3>
+                            <div class="water-glasses" id="water-glasses">
+                                <!-- Water glasses will be generated by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Inspiring Word -->
+                        <div class="inspiring-word-section">
+                            <input 
+                                type="text" 
+                                id="inspiring-word" 
+                                placeholder="Today's inspiring word..." 
+                                class="inspiring-word-input figma-hand-bold"
+                            />
+                        </div>
+
+                        <!-- Top 3 Priorities -->
+                        <div class="priorities-section">
+                            <h3 class="figma-hand-bold section-title">Top 3 Priorities</h3>
+                            <div class="priorities-list">
+                                <div class="priority-item">
+                                    <span class="priority-number figma-hand-bold">1.</span>
+                                    <input type="text" class="priority-input figma-hand-bold" placeholder="Priority 1..." data-priority="0">
+                                </div>
+                                <div class="priority-item">
+                                    <span class="priority-number figma-hand-bold">2.</span>
+                                    <input type="text" class="priority-input figma-hand-bold" placeholder="Priority 2..." data-priority="1">
+                                </div>
+                                <div class="priority-item">
+                                    <span class="priority-number figma-hand-bold">3.</span>
+                                    <input type="text" class="priority-input figma-hand-bold" placeholder="Priority 3..." data-priority="2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Half - Coral to Peach Gradient -->
+                    <div class="dashboard-right">
+                        <div class="tasks-container">
+                            <h3 class="figma-hand-bold section-title">Today's Tasks</h3>
+                            
+                            <div class="tasks-list" id="tasks-list">
+                                <!-- Tasks will be generated by JS -->
+                            </div>
+
+                            <button id="copy-tasks-btn" class="copy-tasks-button figma-hand-bold">
+                                Copy Tasks
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page 2: Planning & Reflection -->
+            <div id="page2" class="page-content page-hidden">
+                <div class="planning-container">
+                    <!-- Notes & Upcoming -->
+                    <div class="notes-section">
+                        <h2 class="figma-hand-bold section-title-large">Notes & Upcoming</h2>
+                        <textarea 
+                            id="notes-textarea"
+                            placeholder="Write your thoughts, upcoming events, or anything else you want to remember..."
+                            class="notes-textarea figma-hand-regular"
+                        ></textarea>
+                    </div>
+
+                    <!-- Meals & Snacks and Right Column -->
+                    <div class="planning-grid">
+                        <div class="meals-section">
+                            <h2 class="figma-hand-bold section-title-large">Meals & Snacks</h2>
+                            
+                            <!-- Breakfast -->
+                            <div class="meal-section">
+                                <h3 class="figma-hand-bold meal-title">Breakfast</h3>
+                                <div class="meal-items">
+                                    <div class="meal-item">
+                                        <span class="bullet">•</span>
+                                        <input type="text" class="meal-input figma-hand-regular" placeholder="Breakfast item..." data-meal="breakfast" data-index="0">
+                                    </div>
+                                    <div class="meal-item">
+                                        <span class="bullet">•</span>
+                                        <input type="text" class="meal-input figma-hand-regular" placeholder="Breakfast item..." data-meal="breakfast" data-index="1">
+                                    </div>
+                                    <div class="meal-item">
+                                        <span class="bullet">•</span>
+                                        <input type="text" class="meal-input figma-hand-regular" placeholder="Breakfast item..." data-meal="breakfast" data-index="2">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Lunch -->
+                            <div class="meal-section">
+                                <h3 class="figma-hand-bold meal-title">Lunch</h3>
+                                <div class="meal-items">
+                                    <div class="meal-item">
+                                        <span class="bullet">•</span>
+                                        <input type="text" class="meal-input figma-hand-regular" placeholder="Lunch item..." data-meal="lunch" data-index="0">
+                                    </div>
+                                    <div class="meal-item">
+                                        <span class="bullet">•</span>
+                                        <input type="text" class="meal-input figma-hand-regular" placeholder="Lunch item..." data-meal="lunch" data-index="1">
+                                    </div>
+                                    <div class="meal-item">
+                                        <span class="bullet">•</span>
+                                        <input type="text" class="meal-input figma-hand-regular" placeholder="Lunch item..." data-meal="lunch" data-index="2">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Dinner -->
+                            <div class="meal-section">
+                                <h3 class="figma-hand-bold meal-title">Dinner</h3>
+                                <div class="meal-items">
+                                    <div class="meal-item">
+                                        <span class="bullet">•</span>
+                                        <input type="text" class="meal-input figma-hand-regular" placeholder="Dinner item..." data-meal="dinner" data-index="0">
+                                    </div>
+                                    <div class="meal-item">
+                                        <span class="bullet">•</span>
+                                        <input type="text" class="meal-input figma-hand-regular" placeholder="Dinner item..." data-meal="dinner" data-index="1">
+                                    </div>
+                                    <div class="meal-item">
+                                        <span class="bullet">•</span>
+                                        <input type="text" class="meal-input figma-hand-regular" placeholder="Dinner item..." data-meal="dinner" data-index="2">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Snacks -->
+                            <div class="meal-section">
+                                <h3 class="figma-hand-bold meal-title">Snacks</h3>
+                                <div class="meal-items">
+                                    <div class="meal-item">
+                                        <span class="bullet">•</span>
+                                        <input type="text" class="meal-input figma-hand-regular" placeholder="Snack item..." data-meal="snacks" data-index="0">
+                                    </div>
+                                    <div class="meal-item">
+                                        <span class="bullet">•</span>
+                                        <input type="text" class="meal-input figma-hand-regular" placeholder="Snack item..." data-meal="snacks" data-index="1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="right-column">
+                            <!-- Mood Selector -->
+                            <div class="mood-section">
+                                <h3 class="figma-hand-bold section-title">How are you feeling today?</h3>
+                                <div class="mood-buttons" id="mood-buttons">
+                                    <button class="mood-button" data-mood="1">
+                                        <span class="mood-emoji">😢</span>
+                                        <span class="mood-label figma-hand-regular">Very Sad</span>
+                                    </button>
+                                    <button class="mood-button" data-mood="2">
+                                        <span class="mood-emoji">😕</span>
+                                        <span class="mood-label figma-hand-regular">Sad</span>
+                                    </button>
+                                    <button class="mood-button" data-mood="3">
+                                        <span class="mood-emoji">😐</span>
+                                        <span class="mood-label figma-hand-regular">Neutral</span>
+                                    </button>
+                                    <button class="mood-button" data-mood="4">
+                                        <span class="mood-emoji">😊</span>
+                                        <span class="mood-label figma-hand-regular">Happy</span>
+                                    </button>
+                                    <button class="mood-button" data-mood="5">
+                                        <span class="mood-emoji">😄</span>
+                                        <span class="mood-label figma-hand-regular">Very Happy</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Day's Wins -->
+                            <div class="wins-section">
+                                <h3 class="figma-hand-bold section-title">Day's Wins</h3>
+                                <textarea 
+                                    id="wins-textarea"
+                                    placeholder="What went well today? What are you proud of?"
+                                    class="wins-textarea figma-hand-italic"
+                                ></textarea>
+                            </div>
+
+                            <!-- NEW: Summary & Export Section -->
+                            <div class="export-section">
+                                <h3 class="figma-hand-bold section-title">Summary & Export</h3>
+                                <p class="figma-hand-regular">Download a complete summary of your day as a text file that you can open in Word, Excel, or any text editor.</p>
+                                <button id="download-summary-btn" class="export-button figma-hand-bold">
+                                    📄 Download Summary
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
